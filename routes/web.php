@@ -10,10 +10,12 @@ use App\Http\Controllers\ViolationController;
 use App\Http\Controllers\RuleController;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Rule;
 use App\Models\Department;
 use App\Models\Generation;
 use App\Models\ClassRoom;
 use App\Models\Violation;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,6 +27,48 @@ Route::get('/users/{id}/violations', function ($id) {
         ->get();
 
     return response()->json($violations);
+});
+
+
+Route::post('/users/{id}/violations', function (Request $request, $id) {
+    try {
+        \Log::info('Request Data:', $request->all());
+
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        // Validasi data
+        $validated = $request->validate([
+            'rule_id' => 'required',
+            'reason' => 'required|string',
+            'punishment' => 'required|string',
+        ]);
+
+        // Simpan data pelanggaran ke database
+        $violation = new Violation();
+        $violation->user_id = $id;
+        $violation->teacher_id = Auth::id();
+        $violation->rule_id = $validated['rule_id'];
+        $violation->reason = $validated['reason'];
+        $violation->punishment = $validated['punishment'];
+        $violation->save();
+
+        return response()->json($violation, 201);
+    } catch (\Exception $e) {
+        \Log::error('Error creating violation:', ['error' => $e->getMessage()]);
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+});
+
+Route::delete('/users/violations/{id}', function ($id) {
+    $violation = Violation::find($id);
+    if (!$violation) {
+        return response()->json(['message' => 'Violation not found'], 404);
+    }
+    $violation->delete();
+    return response()->json(['message' => 'Violation deleted successfully']);
 });
 
 Route::get('/users/{id}/details', function ($id) {
@@ -47,6 +91,9 @@ Route::get('/departments/list', function () {
 });
 
 Route::get('/dashboard/{department}/{year}/{class}', function ($department, $year, $class) {
+    if (Auth::user()->role !== 'teacher') {
+        return redirect('/home');
+    }
     $users = User::whereHas('department', function ($query) use ($department) {
             $query->where('name', $department);
         })
@@ -57,8 +104,18 @@ Route::get('/dashboard/{department}/{year}/{class}', function ($department, $yea
             $query->where('name', $class);
         })
         ->get();
-    return view('dashboard', compact('users'));
+    $rules = Rule::all();
+    return view('dashboard', compact('users', 'rules'));
 })->middleware(['auth', 'verified'])->name('dashboard.show');
+
+Route::get('/dashboard', function () {
+    if (Auth::user()->role !== 'teacher') {
+        return redirect('/home');
+    }
+    $users = User::with(['department', 'generation', 'classRoom'])->get();
+    $rules = Rule::all();
+    return view('dashboard', compact('users', 'rules'));
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('/rules', RuleController::class)->middleware(['auth', 'verified'])->names([
     'index'   => 'rules.index',
@@ -120,13 +177,6 @@ Route::resource('/users', UserController::class)->middleware(['auth', 'verified'
     'destroy' => 'users.destroy',
 ]);
 
-Route::get('/dashboard', function () {
-    if (Auth::user()->role !== 'teacher') {
-        return redirect('/home');
-    }
-
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
 
