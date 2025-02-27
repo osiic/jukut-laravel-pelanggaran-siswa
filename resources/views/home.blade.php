@@ -28,6 +28,9 @@
                         @endforeach
                     </tbody>
                 </table>
+<div class="py-5">
+{{ $users->links('pagination::tailwind') }}
+            </div>
             </div>
         </div>
     </div>

@@ -10,11 +10,11 @@ class ClassRoom extends Model
     use HasFactory;
 
     protected $table = 'classes'; // Pastikan nama tabel benar
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'department_id', 'generation_id'];
 
-    public function users()
+    public function department()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(Department::class);
     }
 
     public function generation()
@@ -22,4 +22,3 @@ class ClassRoom extends Model
         return $this->belongsTo(Generation::class);
     }
 }
-

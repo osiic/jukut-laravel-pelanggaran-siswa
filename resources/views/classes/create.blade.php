@@ -29,6 +29,25 @@
                     <x-input-error class="mt-2" :messages="$errors->get('name')" />
                 </div>
 
+<div>
+    <x-input-label for="department_id" :value="__('Department')" />
+    <select id="department_id" name="department_id" class="mt-1 block w-full" required>
+        @foreach ($departments as $department)
+            <option value="{{ $department->id }}">{{ $department->name }}</option>
+        @endforeach
+    </select>
+</div>
+
+<div>
+    <x-input-label for="generation_id" :value="__('Generation')" />
+    <select id="generation_id" name="generation_id" class="mt-1 block w-full" required>
+        @foreach ($generations as $generation)
+            <option value="{{ $generation->id }}">{{ $generation->year }}</option>
+        @endforeach
+    </select>
+</div>
+
+
                 <div class="flex items-center gap-4">
                     <x-primary-button>{{ __('Save') }}</x-primary-button>
 

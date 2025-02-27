@@ -52,7 +52,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'department_id' => 'nullable|exists:departments,id',
             'generation_id' => 'nullable|exists:generations,id',
-            'class_id' => 'nullable|exists:class_rooms,id',
+            'class_id' => 'nullable|exists:classes,id',
         ]);
 
         User::create([
@@ -93,7 +93,7 @@ class UserController extends Controller
             'role' => 'required|string',
             'department_id' => 'nullable|exists:departments,id',
             'generation_id' => 'nullable|exists:generations,id',
-            'class_id' => 'nullable|exists:class_rooms,id',
+            'class_id' => 'nullable|exists:classes,id',
         ]);
 
         $user->update([

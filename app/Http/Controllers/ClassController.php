@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ClassRoom;
+use App\Models\Department;
+use App\Models\Generation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -29,7 +31,10 @@ class ClassController extends Controller
         if (Auth::user()->role !== 'teacher') {
             return Redirect::to('/home');
         }
-        return view('classes.create');
+
+        $departments = Department::all();
+        $generations = Generation::all();
+        return view('classes.create', compact('departments', 'generations'));
     }
 
     /**
@@ -39,11 +44,11 @@ class ClassController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'department_id' => 'required|exists:departments,id',
+            'generation_id' => 'required|exists:generations,id',
         ]);
 
-        ClassRoom::create([
-            'name' => $request->name,
-        ]);
+        ClassRoom::create($request->all());
 
         return redirect()->route('classes.index')->with('success', 'Class created successfully.');
     }
@@ -56,7 +61,10 @@ class ClassController extends Controller
         if (Auth::user()->role !== 'teacher') {
             return Redirect::to('/home');
         }
-        return view('classes.edit', compact('class'));
+
+        $departments = Department::all();
+        $generations = Generation::all();
+        return view('classes.edit', compact('class', 'departments', 'generations'));
     }
 
     /**
@@ -66,11 +74,11 @@ class ClassController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'department_id' => 'required|exists:departments,id',
+            'generation_id' => 'required|exists:generations,id',
         ]);
 
-        $class->update([
-            'name' => $request->name,
-        ]);
+        $class->update($request->all());
 
         return redirect()->route('classes.index')->with('success', 'Class updated successfully.');
     }

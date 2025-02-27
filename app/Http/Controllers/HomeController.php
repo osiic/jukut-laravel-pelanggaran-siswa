@@ -12,7 +12,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users = User::all(); // Ambil semua data user
+        $users = User::paginate(5); // Ambil semua data user
         return view('home', compact('users'));
     }
 }

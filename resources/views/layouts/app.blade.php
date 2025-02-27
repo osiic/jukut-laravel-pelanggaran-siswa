@@ -1,7 +1,7 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -113,7 +113,14 @@ function renderDepartments(departments) {
     const navContainer = document.getElementById("departments-nav");
     navContainer.innerHTML = ""; // Clear previous content
 
-    departments[0].forEach(department => {
+    if (!Array.isArray(departments) || departments.length < 3) {
+        console.error("Data format is incorrect:", departments);
+        return;
+    }
+
+    const [departmentsList, generationsList, classesList] = departments;
+
+    departmentsList.forEach(department => {
         const departmentEl = document.createElement("details");
         departmentEl.classList.add("group");
 
@@ -132,9 +139,13 @@ function renderDepartments(departments) {
         const generationsContainer = document.createElement("div");
         generationsContainer.classList.add("pl-6", "mt-2");
 
-        departments[1].forEach(generation => {
+        // Filter generations untuk department ini
+        const relatedGenerations = generationsList;
+
+        relatedGenerations.forEach(generation => {
             const generationEl = document.createElement("details");
             generationEl.classList.add("group");
+
             generationEl.innerHTML = `
                 <summary class="flex justify-between items-center py-2 px-4 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
                     ${generation.year}
@@ -145,9 +156,13 @@ function renderDepartments(departments) {
             const classesContainer = document.createElement("div");
             classesContainer.classList.add("pl-6");
 
-            departments[2].forEach(classItem => {
+            // Filter kelas yang sesuai dengan department & generation
+            const relatedClasses = classesList.filter(cls => cls.department_id === department.id && cls.generation_id === generation.id);
+
+            relatedClasses.forEach(classItem => {
                 const classEl = document.createElement("div");
                 classEl.classList.add("group");
+
                 classEl.innerHTML = `
                     <a href="/dashboard/${department.name}/${generation.year}/${classItem.name}" class="flex items-center py-3 px-4 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -156,7 +171,6 @@ function renderDepartments(departments) {
                         ${classItem.name}
                     </a>
                 `;
-
 
                 classesContainer.appendChild(classEl);
             });
@@ -169,7 +183,6 @@ function renderDepartments(departments) {
         navContainer.appendChild(departmentEl);
     });
 }
-
     </script>
 </body>
 </html>

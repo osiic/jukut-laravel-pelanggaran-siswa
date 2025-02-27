@@ -27,6 +27,8 @@
                         <tr class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 uppercase text-sm leading-normal">
                             <th class="py-3 px-6 text-left">ID</th>
                             <th class="py-3 px-6 text-left">Name</th>
+                            <th class="py-3 px-6 text-left">Department</th>
+                            <th class="py-3 px-6 text-left">Generation</th>
                             <th class="py-3 px-6 text-center">Actions</th>
                         </tr>
                     </thead>
@@ -35,6 +37,8 @@
                             <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition duration-200">
                                 <td class="py-4 px-6">{{ $class->id }}</td>
                                 <td class="py-4 px-6">{{ $class->name }}</td>
+                                <td class="py-4 px-6">{{ $class->department->name }}</td>
+                                <td class="py-4 px-6">{{ $class->generation->year }}</td>
                                 <td class="py-4 px-6 flex flex-col gap-2">
                                     <a href="{{ route('classes.edit', $class) }}" class="flex justify-center items-center gap-2 px-4 py-2 border border-gray-800 dark:border-gray-200 rounded-md text-gray-800 dark:text-gray-200 hover:border-gray-600 dark:hover:border-white focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
