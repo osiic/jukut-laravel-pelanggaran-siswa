@@ -132,7 +132,7 @@ function renderDepartments(departments) {
                     </svg>
                     ${department.name}
                 </div>
-                <span class="group-open:rotate-180 transition-transform">▼</span>
+                <span class="group-open:rotate-90 transition-transform">▼</span>
             </summary>
         `;
 
@@ -149,7 +149,7 @@ function renderDepartments(departments) {
             generationEl.innerHTML = `
                 <summary class="flex justify-between items-center py-2 px-4 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
                     ${generation.year}
-                    <span class="group-open:rotate-180 transition-transform">▼</span>
+                    <span class="group-open:rotate-90 transition-transform">▼</span>
                 </summary>
             `;
 
