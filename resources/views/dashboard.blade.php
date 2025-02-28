@@ -104,7 +104,7 @@
 async function showViolations(userId) {
     document.getElementById('selected-user-id').value = userId;
     try {
-        const response = await fetch(`/users/${userId}/violations`);
+        const response = await fetch(`/users/violations/${userId}`);
         const data = await response.json();
 
         document.getElementById('userModal').classList.remove('hidden');
@@ -149,7 +149,7 @@ document.getElementById('create-violation-form').addEventListener('submit', asyn
     const punishment = document.getElementById('violation-punishment').value;
 
     try {
-        await fetch(`/users/${userId}/violations`, {
+        await fetch(`/users/violations/${userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

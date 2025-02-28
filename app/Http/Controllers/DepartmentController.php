@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Department;
+use App\Models\Generation;
+use App\Models\ClassRoom;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -60,5 +62,13 @@ class DepartmentController extends Controller
     {
         $department->delete();
         return redirect()->route('departments.index')->with('success', 'Department berhasil dihapus');
+    }
+    public function list()
+    {
+    $departments = Department::all();
+    $generations = Generation::all();
+    $classes = ClassRoom::all();
+
+    return response()->json([$departments, $generations, $classes]);
     }
 }
