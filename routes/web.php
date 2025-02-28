@@ -31,6 +31,9 @@ Route::get('/dashboard/{department}/{year}/{class}', [DashboardController::class
 // Users
 Route::get('/users/{id}/details', [UserController::class, 'show']);
 
+// Get Class
+Route::get('/get-classes', [ClassController::class, 'getClasses']);
+
 // API Violations
 Route::get('/users/violations/{id}/violations', [ApiViolationController::class, 'index']);
 Route::post('/users/violations/{id}/', [ApiViolationController::class, 'store']);

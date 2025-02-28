@@ -76,9 +76,6 @@
                     <x-input-label for="class_id" :value="__('Class')" />
                     <select id="class_id" name="class_id" class="mt-1 block w-full p-2 border rounded dark:bg-gray-700 dark:text-white">
                         <option value="">-- Select Class --</option>
-                        @foreach ($classes as $class)
-                            <option value="{{ $class->id }}">{{ $class->name }}</option>
-                        @endforeach
                     </select>
                     <x-input-error class="mt-2" :messages="$errors->get('class_id')" />
                 </div>
@@ -114,4 +111,33 @@
             </form>
         </div>
     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const departmentSelect = document.getElementById("department_id");
+        const generationSelect = document.getElementById("generation_id");
+        const classSelect = document.getElementById("class_id");
+
+        function fetchClasses() {
+            const departmentId = departmentSelect.value;
+            const generationId = generationSelect.value;
+
+            if (departmentId && generationId) {
+                fetch(`/get-classes?department_id=${departmentId}&generation_id=${generationId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        classSelect.innerHTML = `<option value="">-- Select Class --</option>`;
+                        data.forEach(classItem => {
+                            classSelect.innerHTML += `<option value="${classItem.id}">${classItem.name}</option>`;
+                        });
+                    })
+                    .catch(error => console.error('Error fetching classes:', error));
+            } else {
+                classSelect.innerHTML = `<option value="">-- Select Class --</option>`;
+            }
+        }
+
+        departmentSelect.addEventListener("change", fetchClasses);
+        generationSelect.addEventListener("change", fetchClasses);
+    });
+</script>
 </x-app-layout>

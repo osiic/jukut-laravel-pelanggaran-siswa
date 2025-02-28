@@ -54,7 +54,7 @@
                     <select id="department_id" name="department_id" class="mt-1 block w-full p-2 border rounded dark:bg-gray-700 dark:text-white">
                         <option value="">-- Select Department --</option>
                         @foreach ($departments as $department)
-                            <option value="{{ $department->id }}" {{ $user->department_id == $department->id ? 'selected' : '' }}>
+                            <option value="{{ $department->id }}" {{ $user->department_id === $department->id ? 'selected' : '' }}>
                                 {{ $department->name }}
                             </option>
                         @endforeach
@@ -68,7 +68,7 @@
                     <select id="generation_id" name="generation_id" class="mt-1 block w-full p-2 border rounded dark:bg-gray-700 dark:text-white">
                         <option value="">-- Select Generation --</option>
                         @foreach ($generations as $generation)
-                            <option value="{{ $generation->id }}" {{ $user->generation_id == $generation->id ? 'selected' : '' }}>
+                            <option value="{{ $generation->id }}" {{ $user->generation_id === $generation->id ? 'selected' : '' }}>
                                 {{ $generation->year }}
                             </option>
                         @endforeach
@@ -82,7 +82,7 @@
                     <select id="class_id" name="class_id" class="mt-1 block w-full p-2 border rounded dark:bg-gray-700 dark:text-white">
                         <option value="">-- Select Class --</option>
                         @foreach ($classes as $class)
-                            <option value="{{ $class->id }}" {{ $user->class_id == $class->id ? 'selected' : '' }}>
+                            <option value="{{ $class->id }}" {{ $user->class_id === $class->id ? 'selected' : '' }}>
                                 {{ $class->name }}
                             </option>
                         @endforeach
@@ -121,4 +121,35 @@
             </form>
         </div>
     </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const departmentSelect = document.getElementById("department_id");
+        const generationSelect = document.getElementById("generation_id");
+        const classSelect = document.getElementById("class_id");
+
+        function fetchClasses() {
+            const departmentId = departmentSelect.value;
+            const generationId = generationSelect.value;
+
+            if (departmentId && generationId) {
+                fetch(`/get-classes?department_id=${departmentId}&generation_id=${generationId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        classSelect.innerHTML = `<option value="">-- Select Class --</option>`;
+                        data.forEach(classItem => {
+                            classSelect.innerHTML += `<option value="${classItem.id}" ${classItem.id === {{ $user->class_id }} ? 'selected' : ''}>${classItem.name}</option>`;
+                        });
+                    })
+                    .catch(error => console.error('Error fetching classes:', error));
+            } else {
+                classSelect.innerHTML = `<option value="">-- Select Class --</option>`;
+            }
+        }
+
+        departmentSelect.addEventListener("change", fetchClasses);
+        generationSelect.addEventListener("change", fetchClasses);
+        fetchClasses(); // Fetch initial class data
+    });
+</script>
 </x-app-layout>

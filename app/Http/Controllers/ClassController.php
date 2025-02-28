@@ -91,4 +91,16 @@ class ClassController extends Controller
         $class->delete();
         return redirect()->route('classes.index')->with('success', 'Class deleted successfully.');
     }
+
+    public function getClasses(Request $request)
+    {
+        $departmentId = $request->department_id;
+        $generationId = $request->generation_id;
+
+        $classes = ClassRoom::where('department_id', $departmentId)
+                    ->where('generation_id', $generationId)
+                    ->get();
+
+        return response()->json($classes);
+    }
 }
