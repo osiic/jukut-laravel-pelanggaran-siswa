@@ -1,4 +1,7 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
+@php
+    use Illuminate\Support\Str;
+@endphp
 
 <!DOCTYPE html>
 <html class="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -20,7 +23,6 @@
     <div class="flex min-h-screen">
 
         <!-- Sidebar (Hanya jika role 'teacher' dan bukan di halaman home) -->
-        @if(auth()->user() && auth()->user()->role === 'teacher' && !request()->routeIs('home'))
             <aside class="w-72 bg-white dark:bg-gray-800 shadow-lg min-h-screen p-4">
                 <div class="flex items-center justify-between mb-4 ml-3 mt-2">
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Dashboard</h2>
@@ -31,7 +33,7 @@
                     <h3 class="px-4 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2 mt-10">Main</h3>
                     <!-- Nested Department Section -->
                     <div id="departments-nav"> </div>
-
+@if(auth()->user() && auth()->user()->role === 'teacher' && !Str::startsWith(request()->path(), 'home'))
                     <!-- REGISTRATION SECTION -->
                     <h3 class="px-4 mt-10 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Registration</h3>
                     <a href="{{ route('departments.index') }}" class="flex items-center py-3 px-4 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
@@ -70,9 +72,9 @@
                         </svg>
                         Violations
                     </a>
+        @endif
                 </nav>
             </aside>
-        @endif
 
         <!-- Main Content -->
         <div class="flex-1">
@@ -164,12 +166,22 @@ function renderDepartments(departments) {
                 classEl.classList.add("group");
 
                 classEl.innerHTML = `
+@if(auth()->user() && auth()->user()->role === 'teacher' && !Str::startsWith(request()->path(), 'home'))
                     <a href="/dashboard/${department.name}/${generation.year}/${classItem.name}" class="flex items-center py-3 px-4 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M16 12V8m0 4l-4 4m4-4h-8"/>
                         </svg>
                         ${classItem.name}
                     </a>
+@else
+
+                    <a href="/home/${department.name}/${generation.year}/${classItem.name}" class="flex items-center py-3 px-4 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 12V8m0 4l-4 4m4-4h-8"/>
+                        </svg>
+                        ${classItem.name}
+                    </a>
+@endif
                 `;
 
                 classesContainer.appendChild(classEl);

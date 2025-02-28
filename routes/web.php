@@ -117,6 +117,14 @@ Route::get('/dashboard', function () {
     return view('dashboard', compact('users', 'rules'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/home/{department}/{year}/{class}', [HomeController::class, 'filterStudents'])
+    ->middleware(['auth', 'verified'])
+    ->name('home.show');
+
+Route::get('/home', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('home');
+
 Route::resource('/rules', RuleController::class)->middleware(['auth', 'verified'])->names([
     'index'   => 'rules.index',
     'create'  => 'rules.create',
@@ -176,9 +184,6 @@ Route::resource('/users', UserController::class)->middleware(['auth', 'verified'
     'update'  => 'users.update',
     'destroy' => 'users.destroy',
 ]);
-
-
-Route::get('/home', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
