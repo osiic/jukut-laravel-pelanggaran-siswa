@@ -9,7 +9,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-800 dark:text-gray-200">
-            <div class="bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6">
+            <div class="bg-white flex flex-col gap-5 dark:bg-gray-800 shadow-lg sm:rounded-lg p-6">
                 @if($users->isEmpty())
                     <p class="text-center py-6 text-gray-500 dark:text-gray-400">Users Not Found.</p>
                 @else
@@ -42,6 +42,7 @@
                             @endforeach
                         </tbody>
                     </table>
+{{ $users->links("pagination::tailwind") }}
                 @endif
             </div>
         </div>

@@ -19,7 +19,7 @@ class ClassController extends Controller
         if (Auth::user()->role !== 'teacher') {
             return Redirect::to('/home');
         }
-        $classes = ClassRoom::all();
+        $classes = ClassRoom::paginate(5);
         return view('classes.index', compact('classes'));
     }
 

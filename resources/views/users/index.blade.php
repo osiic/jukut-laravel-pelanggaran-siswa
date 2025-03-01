@@ -16,7 +16,7 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-800 dark:text-gray-200">
-            <div class="bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6">
+            <div class="bg-white flex flex-col gap-5 dark:bg-gray-800 shadow-lg sm:rounded-lg p-6">
                 <table class="w-full border-collapse">
                     <thead>
                         <tr class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 uppercase text-sm leading-normal">
@@ -68,6 +68,7 @@
                 @if($users->isEmpty())
                     <p class="text-center py-6 text-gray-500 dark:text-gray-400">No users found.</p>
                 @endif
+{{ $users->links("pagination::tailwind") }}
             </div>
         </div>
     </div>
@@ -100,7 +101,7 @@
 
     <script>
         function showViolations(userId) {
-            fetch(`/users/${userId}/violations`)
+            fetch(`/users/violations/${userId}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('userModal').classList.remove('hidden');

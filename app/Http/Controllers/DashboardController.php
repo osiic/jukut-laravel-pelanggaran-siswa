@@ -14,7 +14,7 @@ class DashboardController extends Controller
             return redirect()->route('home');
         }
 
-        $users = User::with(['department', 'generation', 'classRoom'])->get();
+        $users = User::with(['department', 'generation', 'classRoom'])->paginate(5);
         $rules = Rule::all();
 
         return view('dashboard', compact('users', 'rules'));
@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $users = User::whereHas('department', fn($q) => $q->where('name', $department))
             ->whereHas('generation', fn($q) => $q->where('year', $year))
             ->whereHas('classRoom', fn($q) => $q->where('name', $class))
-            ->get();
+            ->paginate(5);
 
         $rules = Rule::all();
 

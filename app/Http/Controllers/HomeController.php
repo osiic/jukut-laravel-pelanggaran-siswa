@@ -36,7 +36,7 @@ class HomeController extends Controller
             ->whereHas('classRoom', function ($query) use ($class) {
                 $query->where('name', $class);
             })
-            ->get();
+            ->paginate(5);
 
         $rules = Rule::all();
 

@@ -21,7 +21,7 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <div class="mt-4 bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6">
+            <div class="mt-4 flex flex-col gap-5 bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6">
                 <table class="w-full border-collapse">
                     <thead>
                         <tr class="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 uppercase text-sm leading-normal">
@@ -67,6 +67,8 @@
                 @if($classes->isEmpty())
                     <p class="text-center py-6 text-gray-500 dark:text-gray-400">No classes found.</p>
                 @endif
+
+{{ $classes->links("pagination::tailwind") }}
             </div>
         </div>
     </div>

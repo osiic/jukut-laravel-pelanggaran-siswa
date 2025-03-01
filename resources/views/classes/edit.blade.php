@@ -33,7 +33,9 @@
     <x-input-label for="department_id" :value="__('Department')" />
     <select id="department_id" name="department_id" class="mt-1 block w-full" required>
         @foreach ($departments as $department)
-            <option value="{{ $department->id }}">{{ $department->name }}</option>
+            <option value="{{ $department->id }}" {{ $class->department_id == $department->id ? 'selected' : '' }}>
+                {{ $department->name }}
+            </option>
         @endforeach
     </select>
 </div>
@@ -42,7 +44,9 @@
     <x-input-label for="generation_id" :value="__('Generation')" />
     <select id="generation_id" name="generation_id" class="mt-1 block w-full" required>
         @foreach ($generations as $generation)
-            <option value="{{ $generation->id }}">{{ $generation->year }}</option>
+            <option value="{{ $generation->id }}" {{ $class->generation_id == $generation->id ? 'selected' : '' }}>
+                {{ $generation->year }}
+            </option>
         @endforeach
     </select>
 </div>

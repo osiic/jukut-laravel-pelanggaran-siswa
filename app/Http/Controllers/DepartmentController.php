@@ -16,7 +16,7 @@ class DepartmentController extends Controller
         if (Auth::user()->role !== 'teacher') {
             return Redirect::to('/home');
         }
-        $departments = Department::all();
+        $departments = Department::paginate(5);
         return view('departments.index', compact('departments'));
     }
 

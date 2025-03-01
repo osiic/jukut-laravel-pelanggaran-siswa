@@ -22,7 +22,7 @@ class UserController extends Controller
         if (Auth::user()->role !== 'teacher') {
             return Redirect::to('/home');
         }
-        $users = User::with(['department', 'generation', 'classRoom'])->get();
+        $users = User::with(['department', 'generation', 'classRoom'])->paginate(5);
         return view('users.index', compact('users'));
     }
 

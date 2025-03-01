@@ -35,8 +35,8 @@ Route::get('/users/{id}/details', [UserController::class, 'show']);
 Route::get('/get-classes', [ClassController::class, 'getClasses']);
 
 // API Violations
-Route::get('/users/violations/{id}/violations', [ApiViolationController::class, 'index']);
-Route::post('/users/violations/{id}/', [ApiViolationController::class, 'store']);
+Route::get('/users/violations/{id}', [ApiViolationController::class, 'index']);
+Route::post('/users/violations/{id}', [ApiViolationController::class, 'store']);
 Route::delete('/users/violations/{id}', [ApiViolationController::class, 'destroy']);
 
 // Departments, Generations, Classes

@@ -19,43 +19,44 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-$departments = ["RPL", "DKV", "KULINER", "ULW", "PERHOTELAN"];
-$generations = ['X', 'XI', 'XII'];
-$classes = ['A1', 'A2', 'B1', 'B2'];
+        $departments = ["RPL", "DKV", "KULINER", "ULW", "PERHOTELAN"];
+        $generations = ['X', 'XI', 'XII'];
+        $classes = ['A1', 'A2', 'B1', 'B2'];
 
-// Buat semua generasi terlebih dahulu
-$generationRecords = [];
-foreach ($generations as $year) {
-    $generationRecords[$year] = Generation::create(['year' => $year]);
-}
+        // Buat semua generasi terlebih dahulu
+        $generationRecords = [];
+        foreach ($generations as $year) {
+            $generationRecords[$year] = Generation::create(['year' => $year]);
+        }
 
-foreach ($departments as $deptName) {
-    $department = Department::create(['name' => $deptName]);
+        foreach ($departments as $deptName) {
+            $department = Department::create(['name' => $deptName]);
 
-    foreach ($generationRecords as $year => $generation) {
-        foreach ($classes as $className) {
-            // Buat kelas dengan department_id dan generation_id yang benar
-            $class = ClassRoom::create([
-                'name' => $className,
-                'department_id' => $department->id,
-                'generation_id' => $generation->id,
-            ]);
+            foreach ($generationRecords as $year => $generation) {
+                foreach ($classes as $className) {
+                    // Buat kelas dengan department_id dan generation_id yang benar
+                    $class = ClassRoom::create([
+                        'name' => $className,
+                        'department_id' => $department->id,
+                        'generation_id' => $generation->id,
+                    ]);
 
-            // Buat 5 siswa untuk setiap kelas
-            for ($i = 1; $i <= 5; $i++) {
-                User::create([
-                    'name' => "Student {$i} {$deptName} {$year} {$className}",
-                    'email' => Str::lower("student{$i}_{$deptName}_{$year}_{$className}@example.com"),
-                    'role' => 'student',
-                    'password' => Hash::make('password'),
-                    'department_id' => $department->id,
-                    'generation_id' => $generation->id,
-                    'class_id' => $class->id,
-                ]);
+                    // Buat 5 siswa untuk setiap kelas
+                    for ($i = 1; $i <= 5; $i++) {
+                        User::create([
+                            'name' => "Student {$i} {$deptName} {$year} {$className}",
+                            'email' => Str::lower("student{$i}_{$deptName}_{$year}_{$className}@example.com"),
+                            'role' => 'student',
+                            'password' => Hash::make('password'),
+                            'department_id' => $department->id,
+                            'generation_id' => $generation->id,
+                            'class_id' => $class->id,
+                        ]);
+                    }
+                }
             }
         }
-    }
-}
+
         // Tambah guru
         User::create([
             'name' => "Teacher",
@@ -85,29 +86,6 @@ foreach ($departments as $deptName) {
             ['rule' => 'Membawa kendaraan ke sekolah yang tidak sesuai standar', 'points' => 10],
             ['rule' => 'Meninggalkan kelas/lingkungan sekolah saat KBM berlangsung tanpa izin', 'points' => 10],
             ['rule' => 'Bersikap tidak sopan terhadap peserta didik lain', 'points' => 15],
-            ['rule' => 'Masuk atau keluar sekolah dengan cara melompat atau menerobos pagar', 'points' => 15],
-            ['rule' => 'Menggunakan jaket atau atribut dengan identitas kelompok/partai/ormas', 'points' => 15],
-            ['rule' => 'Membuat kegaduhan atau keonaran yang mengganggu KBM', 'points' => 15],
-            ['rule' => 'Membawa, menyimpan, dan mengonsumsi rokok/vape di lingkungan sekolah', 'points' => 20],
-            ['rule' => 'Memberikan keterangan atau pernyataan palsu', 'points' => 20],
-            ['rule' => 'Menindik telinga (laki-laki) atau dengan sengaja menambah tindik (perempuan)', 'points' => 30],
-            ['rule' => 'Tidak sekolah tanpa surat keterangan', 'points' => 30],
-            ['rule' => 'Dengan sengaja melakukan perusakan barang milik orang lain atau sekolah', 'points' => 30],
-            ['rule' => 'Berlaku tidak sopan atau menghina kepala sekolah, guru, atau karyawan', 'points' => 50],
-            ['rule' => 'Menyimpan, menyebarkan, atau menonton konten pornografi di area sekolah', 'points' => 50],
-            ['rule' => 'Menjadi anggota organisasi terlarang atau kegiatan ilegal', 'points' => 50],
-            ['rule' => 'Berjudi di area sekolah dengan menggunakan uang', 'points' => 50],
-            ['rule' => 'Melakukan pemalsuan tanda tangan kepala sekolah, guru, orang tua, atau pihak lain', 'points' => 50],
-            ['rule' => 'Meminta paksa uang atau barang orang lain (pemerasan)', 'points' => 50],
-            ['rule' => 'Melakukan intimidasi terhadap peserta didik lain (bullying)', 'points' => 60],
-            ['rule' => 'Berkelahi di lingkungan sekolah', 'points' => 60],
-            ['rule' => 'Membawa, menyimpan, atau menyembunyikan petasan/bahan peledak/senjata tajam', 'points' => 60],
-            ['rule' => 'Melakukan perkelahian dengan seragam sekolah di luar lingkungan sekolah', 'points' => 100],
-            ['rule' => 'Memicu tawuran yang mengakibatkan korban dari kedua belah pihak', 'points' => 100],
-            ['rule' => 'Melakukan tindakan kriminal yang berhubungan dengan pihak kepolisian', 'points' => 100],
-            ['rule' => 'Membawa, menyimpan, mengonsumsi, dan mengedarkan minuman keras, narkoba, atau zat adiktif lainnya', 'points' => 100],
-            ['rule' => 'Melakukan pemerkosaan, tindakan asusila, atau kehamilan di luar nikah', 'points' => 100],
-            ['rule' => 'Menghina atau menjelekkan nama baik sekolah melalui media cetak atau elektronik', 'points' => 100]
         ];
 
         foreach ($rules as $rule) {
@@ -120,16 +98,21 @@ foreach ($departments as $deptName) {
         $rules = Rule::all();
 
         foreach ($students as $student) {
-            $randomTeacher = $teachers->random();
-            $randomRule = $rules->random();
+            // Tentukan jumlah pelanggaran secara random (0 hingga 10)
+            $violationCount = rand(0, 10);
 
-            Violation::create([
-                'user_id' => $student->id,
-                'teacher_id' => $randomTeacher->id,
-                'rule_id' => $randomRule->id,
-                'reason' => 'Pelanggaran acak yang dilakukan siswa.',
-                'punishment' => 'Diberikan teguran lisan.',
-            ]);
+            for ($i = 0; $i < $violationCount; $i++) {
+                $randomTeacher = $teachers->random();
+                $randomRule = $rules->random();
+
+                Violation::create([
+                    'user_id' => $student->id,
+                    'teacher_id' => $randomTeacher->id,
+                    'rule_id' => $randomRule->id,
+                    'reason' => 'Pelanggaran acak yang dilakukan siswa.',
+                    'punishment' => 'Diberikan teguran lisan.',
+                ]);
+            }
         }
     }
 }

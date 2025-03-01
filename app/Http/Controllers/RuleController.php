@@ -12,7 +12,7 @@ class RuleController extends Controller
      */
     public function index()
     {
-        $rules = Rule::all();
+        $rules = Rule::paginate(5);
         return view('rules.index', compact('rules'));
     }
 

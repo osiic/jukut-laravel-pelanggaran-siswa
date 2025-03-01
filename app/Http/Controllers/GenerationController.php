@@ -14,7 +14,7 @@ class GenerationController extends Controller
         if (Auth::user()->role !== 'teacher') {
             return Redirect::to('/home');
         }
-        $generations = Generation::all();
+        $generations = Generation::paginate(5);
         return view('generations.index', compact('generations'));
     }
 
