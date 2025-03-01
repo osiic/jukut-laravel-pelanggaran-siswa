@@ -78,7 +78,7 @@
     <script>
 async function showViolations(userId) {
     try {
-        const response = await fetch(`/users/${userId}/violations`);
+        const response = await fetch(`/users/violations/${userId}`);
         const data = await response.json();
 
         document.getElementById('userModal').classList.remove('hidden');

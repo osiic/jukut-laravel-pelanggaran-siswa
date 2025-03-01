@@ -25,7 +25,7 @@
 
         <div>
             <x-input-label :value="__('Role')" />
-            <x-text-input type="text" class="mt-1 dark:bg-slate-200 dark:text-black text-white bg-slate-800 block w-full" disabled="true" :value="old('role', $user->role)" />
+            <x-text-input type="text" class="mt-1 dark:bg-slate-200 dark:text-slate-800 text-white bg-slate-800 block w-full" disabled="true" :value="old('role', $user->role)" />
         </div>
 
         <div>
