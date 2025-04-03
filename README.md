@@ -21,67 +21,7 @@ erDiagram
         bigint class_id FK
         timestamp created_at
         timestamp updated_at
-    }
-    
-    password_reset_tokens {
-        string email PK
-        string token
-        timestamp created_at
-    }
-    
-    sessions {
-        string id PK
-        bigint user_id FK
-        string ip_address
-        text user_agent
-        longtext payload
-        integer last_activity
-    }
-    
-    cache {
-        string key PK
-        mediumtext value
-        integer expiration
-    }
-    
-    cache_locks {
-        string key PK
-        string owner
-        integer expiration
-    }
-    
-    jobs {
-        bigint id PK
-        string queue
-        longtext payload
-        unsignedTinyInteger attempts
-        unsignedInteger reserved_at
-        unsignedInteger available_at
-        unsignedInteger created_at
-    }
-    
-    job_batches {
-        string id PK
-        string name
-        integer total_jobs
-        integer pending_jobs
-        integer failed_jobs
-        longtext failed_job_ids
-        mediumtext options
-        integer cancelled_at
-        integer created_at
-        integer finished_at
-    }
-    
-    failed_jobs {
-        bigint id PK
-        string uuid
-        text connection
-        text queue
-        longtext payload
-        longtext exception
-        timestamp failed_at
-    }
+    }                
     
     departments {
         bigint id PK
@@ -123,4 +63,5 @@ erDiagram
         text punishment
         timestamp created_at
         timestamp updated_at
-    }```
+    }
+```
