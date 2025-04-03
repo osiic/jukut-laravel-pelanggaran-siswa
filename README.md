@@ -1,4 +1,4 @@
-```
+```mermaid
 erDiagram
     users ||--o{ violations : "melanggar"
     users ||--o{ violations : "memberikan"
